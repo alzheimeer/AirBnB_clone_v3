@@ -83,17 +83,17 @@ class DBStorage:
         for a, b in self.all().items():
             if b.id == id and type(b).__name__ == cls:
                 return b
-            
+
     def count(self, cls=None):
-        ''' Returns the number of objects in storage 
+        ''' Returns the number of objects in storage
         matching the given class name. If no name is passed, returns the count
         of all objects in storage.
         '''
         if cls is None:
-            return len(self.all())       
+            return len(self.all())
         else:
             g = 0
             for a, b in self.all().items():
                 if type(b).__name__ == cls:
-                    g = g + 1 
+                    g = g + 1
             return g
