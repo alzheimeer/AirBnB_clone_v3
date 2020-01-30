@@ -1,9 +1,11 @@
 #!/usr/bin/python
 """ holds class User"""
 import models
+import hashlib
+import os
+import sqlalchemy
 from models.base_model import BaseModel, Base
 from os import getenv
-import sqlalchemy
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
@@ -25,5 +27,9 @@ class User(BaseModel, Base):
         last_name = ""
 
     def __init__(self, *args, **kwargs):
-        """initializes user"""
+        """
+        Instantiate user with encoded passwor
+        """
         super().__init__(*args, **kwargs)
+        pass_encode = self.password.encode()
+        self.password = hashlib.md5(pass_encode).hexdigest()
