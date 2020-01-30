@@ -1,27 +1,28 @@
 #!/usr/bin/python3
-""" View State """
+""" View Amenity """
 
 from models import storage
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models.state import State
+from models.amenity import Amenity
 
 
-@app_views.route("/states", methods=["GET"])
-def statesAll():
-    """Retrieves all states with a list of objects"""
+
+@app_views.route("/amenities", methods=["GET"])
+def amenityAll():
+    """Retrieves all amenities with a list of objects"""
     ll = []
-    s = storage.all('State').values()
+    s = storage.all('Amenity').values()
     for v in s:
         ll.append(v.to_dict())
     return jsonify(ll)
 
 
-@app_views.route("/states/<id>", methods=["GET"])
-def stateId(id):
-    """id state retrieve json object"""
+@app_views.route("/amenities/<id>", methods=["GET"])
+def amenityId(id):
+    """id Amenity retrieve json object"""
     ll = []
-    s = storage.all('State').values()
+    s = storage.all('Amenity').values()
     for v in s:
         if v.id == id:
             ll.append(v.to_dict())
@@ -30,41 +31,41 @@ def stateId(id):
     return jsonify(ll)
 
 
-@app_views.route("/states/<id>", methods=["DELETE"])
-def stateDel(id):
-    """delete state with id"""
-    state = storage.get("State", id)
-    if state is None:
+@app_views.route("/amenities/<id>", methods=["DELETE"])
+def amenityDel(id):
+    """delete Amenity with id"""
+    amenity = storage.get("Amenity", id)
+    if amenity is None:
         abort(404)
-    state.delete()
+    amenity.delete()
     storage.save()
     return jsonify({}), 200
 
 
-@app_views.route('/states/', methods=['POST'])
-def statePost():
-    """ POST a new state"""
+@app_views.route('/amenities/', methods=['POST'])
+def amenityPost():
+    """ POST a new amenity"""
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
     if 'name' not in request.json:
         return jsonify({"error": "Missing name"}), 400
     x = request.get_json()
-    s = State(**x)
+    s = Amenity(**x)
     s.save()
     return jsonify(s.to_dict()), 201
 
 
-@app_views.route('/states/<id>', methods=['PUT'])
-def statePut(id):
-    """ Update a State object """
+@app_views.route('/amenities/<id>', methods=['PUT'])
+def amenityPut(id):
+    """ Update a amenity object """
     ignore = {"id", "created_at", "updated_at"}
-    state = storage.get("State", id)
-    if state is None:
+    amenity = storage.get("Amenity", id)
+    if amenity is None:
         abort(404)
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
     x = request.get_json()
     for k, v in x.items():
         if k not in ignore:
-            setattr(state, k, v)
-    return jsonify(state.to_dict()), 200
+            setattr(amenity, k, v)
+    return jsonify(amenity.to_dict()), 200
