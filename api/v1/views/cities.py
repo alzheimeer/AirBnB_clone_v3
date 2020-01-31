@@ -66,8 +66,9 @@ def put_cities(city_id):
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
-    for key, val in request.get_json().items():
-        if k not in ignore:
+    pepe = request.get_json()
+    for key in pepe:
+        if key not in ignore:
             setattr(yy, key, val)
     yy.save()
     return jsonify(yy.to_dict()), 200
