@@ -47,22 +47,23 @@ def statePost():
     if not state_data.get('name'):
         abort(400, "Missing name")
     s = State(**x)
-    s.save()
+    storage.new(new_state)
+    storage.save()
     return (jsonify(s.to_dict()), 201)
 
 
 @app_views.route('/states/<id>', methods=['PUT'])
 def statePut(id):
     """ Update a State object """
-    ignore = ['id', 'created_at', 'updated_at']
-    state = storage.get("State", id)
     x = request.get_json()
     if x is None:
         abort(400, "Not a JSON")
+    ignore = ['id', 'created_at', 'updated_at']
+    state = storage.get("State", id)
     if state is None:
         abort(404)
     for k, v in x.items():
         if k not in ignore:
             setattr(state, k, v)
     state.save()
-    return jsonify(state_to_update.to_dict()), 200
+    return jsonify(state.to_dict()), 200
