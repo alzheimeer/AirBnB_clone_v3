@@ -69,4 +69,5 @@ def userPut(id):
     for k, v in x.items():
         if k not in ignore:
             setattr(user, k, v)
+    user.save()
     return jsonify(user.to_dict()), 200
