@@ -159,6 +159,9 @@ $ pip3 install Flask
 #INSTALL FLASGGER
 $ pip3 install flasgger
 
+#INSTALL FLASK_CORS
+pip3 install flask_cors
+
 ## Bugs
 No known bugs at this time. Should be somes!
 
