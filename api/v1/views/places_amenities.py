@@ -24,7 +24,8 @@ def retAinP(id):
     abort(404)
 
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['DELETE'])
+@app_views.route('/places/<place_id>/amenities/<amenity_id>',
+                 methods=['DELETE'])
 def delAinP(place_id, amenity_id):
     """Delete an amenity object from a place"""
     ss = storage.get("Place", place_id)
