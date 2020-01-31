@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Flask app """
+""" Flask app with cors module   """
 
 from models import storage
 from flask import Flask, make_response, jsonify
@@ -10,6 +10,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.register_blueprint(app_views)
+""" Cors access to selected resources from a different origin."""
 cors = CORS(app, resources={"/*": {"origins": "0.0.0.0"}})
 
 
