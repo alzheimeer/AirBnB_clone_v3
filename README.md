@@ -151,7 +151,11 @@ EOF  all  create  destroy  help  quit  show  update
 ```
 
 ## AirBnB clone - RESTful API
-This project has been great, 
+This project has been great,
+
+#INSTALL FLASK
+$ pip3 install Flask
+
 
 ## Bugs
 No known bugs at this time. Should be somes!
