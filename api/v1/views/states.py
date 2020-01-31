@@ -19,7 +19,6 @@ def statesAll():
 @app_views.route("/states/<id>", methods=["GET"])
 def stateId(id):
     """id state retrieve json object"""
-    ll = []
     s = storage.all('State').values()
     for v in s:
         if v.id == id:
@@ -47,14 +46,14 @@ def statePost():
     if not state_data.get('name'):
         abort(400, "Missing name")
     s = State(**x)
-    storage.new(new_state)
+    storage.new(statePost)
     storage.save()
-    return (jsonify(s.to_dict()), 201)
+    return jsonify(statePost.to_dict()), 201
 
 
 @app_views.route('/states/<id>', methods=['PUT'])
 def statePut(id):
-    """ Update a State object """
+    """Update a State object"""
     x = request.get_json()
     if x is None:
         abort(400, "Not a JSON")
