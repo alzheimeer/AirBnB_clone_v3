@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""States view module"""
+""" View State """
 from models import storage
 from models.state import State
 from api.v1.views import app_views
@@ -53,17 +53,17 @@ def new_state():
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def state_update(state_id):
-    """Updates one state based on its id"""
-    data_for_update = request.get_json()
-    if data_for_update is None:
+def statePut(state_id):
+    """Update a State object"""
+    x = request.get_json()
+    if x is None:
         abort(400, "Not a JSON")
-    forbiden_keys = ['id', 'created_at', 'updated_at']
-    state_to_update = storage.get('State', state_id)
-    if state_to_update is None:
+    ignore = ['id', 'created_at', 'updated_at']
+    state = storage.get("State", state_id)
+    if state is None:
         abort(404)
-    for key, value in data_for_update.items():
-        if key not in forbiden_keys:
-            setattr(state_to_update, key, value)
-    state_to_update.save()
-    return jsonify(state_to_update.to_dict()), 200
+    for k, v in x.items():
+        if k not in ignore:
+            setattr(state, k, v)
+    state.save()
+    return jsonify(state.to_dict()), 200
