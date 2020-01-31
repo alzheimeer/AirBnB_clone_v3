@@ -50,18 +50,19 @@ def cityDel(id):
 
 @app_views.route('/states/<id>/cities', methods=['POST'])
 def cityPost(id):
-    """ POST a new state"""
-    if storage.get("State", id) is None:
+    """ POST a new cities, by typing the name and the id """
+    state = storage.get("State", str(id))
+    if state is None:
         abort(404)
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
-    x = request.get_json()
-    x['state_id'] = str(id)
-    if "name" not in x:
+    if 'name' not in request.json:
         return jsonify({"error": "Missing name"}), 400
-    s = City(**x)
-    s.save()
-    return jsonify(s.to_dict()), 201
+    content = request.get_json()
+    content['state_id'] = str(state_id)
+    city = City(**content)
+    city.save()
+    return jsonify(city.to_dict()), 201
 
 
 @app_views.route('/cities/<id>', methods=['PUT'])
