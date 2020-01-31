@@ -151,9 +151,8 @@ EOF  all  create  destroy  help  quit  show  update
 ```
 
 ## Bugs
-No known bugs at this time. 
+No known bugs at this time. Should be somes!
 
 ## Authors
 Edgar Quintero - [Github](https://github.com/alzheimeer) / [Twitter](https://twitter.com/alzheimeer)  
-Carlos Alvarez - [Github](https://github.com/charlyhackr) / [Twitter](https://twitter.com/charlyhackr)
-
+Carlos Alvarez - [Github](https://github.com/charlyhackr) / [Twitter](https://twitter.com/charlyhack)
