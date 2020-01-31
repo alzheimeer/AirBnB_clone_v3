@@ -45,13 +45,15 @@ def stateDel(id):
 def statePost():
     """ POST a new state"""
     if not request.json:
-        return jsonify({"error": "Not a JSON"}), 400
-    if 'name' not in request.json:
-        return jsonify({"error": "Missing name"}), 400
-    x = request.get_json()
-    s = State(**x)
-    s.save()
-    return jsonify(s.to_dict()), 201
+        return jsonify("Not a JSON"), 400
+    else:
+        x = request.get_json()
+        if 'name' not in request.json:
+            return jsonify("Missing name"), 400
+        else:
+            s = State(**x)
+            s.save()
+            return (jsonify(s.to_dict()), 201)
 
 
 @app_views.route('/states/<id>', methods=['PUT'])
@@ -62,9 +64,10 @@ def statePut(id):
     if state is None:
         abort(404)
     if not request.json:
-        return jsonify({"error": "Not a JSON"}), 400
+        return jsonify("Not a JSON"), 400
     x = request.get_json()
     for k, v in x.items():
         if k not in ignore:
             setattr(state, k, v)
-    return jsonify(state.to_dict()), 200
+    state.save()
+    return(jsonify(dic[key].to_dict())), 200
