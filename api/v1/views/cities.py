@@ -1,49 +1,44 @@
 #!/usr/bin/python3
-""" View State """
+""" PACKAGE """
 from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
 from models.city import City
 
 
-@app_views.route("/states/<id>/cities", methods=["GET"])
-def cityAll(id):
-    """id state retrieve json object with his cities"""
-    ll = []
-    s = storage.all('State').values()
-    ss = storage.all('City').values()
-    for v in s:
-        if v.id == id:
-            for vv in ss:
-                if vv.state_id == id:
-                    ll.append(vv.to_dict())
-    if not ll:
-        return abort(404)
-    return jsonify(ll)
+@app_views.route('/states/<state_id>/cities', methods=['GET'])
+def ret_cities_in_state(state_id):
+    """ Retrieves the list of all City objects of a State """
+    list_cities = []
+    state = storage.get("State", str(state_id))
+    if state is None:
+        abort(404)
+    # Remember is an objects dictionary
+    cities = storage.all("City").values()
+    for city in cities:
+        if city.state_id == str(state_id):
+            list_cities.append(city.to_dict())
+    return jsonify(list_cities)
 
 
-@app_views.route("/cities/<id>", methods=["GET"])
-def cityId(id):
-    """id city retrieve json object"""
-    ll = []
-    s = storage.all('City').values()
-    for v in s:
-        if v.id == id:
-            ll.append(v.to_dict())
-    if not ll:
-        return abort(404)
-    return jsonify(ll)
+@app_views.route('/cities/<city_id>', methods=['GET'])
+def ret_cities_id(city_id):
+    """ Retrieves an object depends on its ID """
+    city = storage.get("City", str(city_id))
+    if city is None:
+        abort(404)
+    return jsonify(city.to_dict())
 
 
-@app_views.route("/cities/<id>", methods=["DELETE"])
-def cityDel(id):
-    """delete city with id"""
-    city = storage.get("City", id)
+@app_views.route('/cities/<city_id>', methods=['DELETE'])
+def del_cities_id(city_id):
+    """ Delete a City object depends on its ID"""
+    city = storage.get("City", str(city_id))
     if city is None:
         abort(404)
     city.delete()
     storage.save()
-    return jsonify({}), 200
+    return (jsonify({})), 200
 
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
