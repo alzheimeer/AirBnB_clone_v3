@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """ View State """
-
-from models import storage
 from api.v1.views import app_views
 from flask import jsonify, abort, request
-from models.state import State
+from models import storage
 from models.city import City
 
 
@@ -59,7 +57,7 @@ def cityPost(id):
     if 'name' not in request.json:
         return jsonify({"error": "Missing name"}), 400
     content = request.get_json()
-    content['state_id'] = str(state_id)
+    content['state_id'] = str(id)
     city = City(**content)
     city.save()
     return jsonify(city.to_dict()), 201
