@@ -156,6 +156,8 @@ This project has been great,
 #INSTALL FLASK
 $ pip3 install Flask
 
+#INSTALL FLASGGER
+$ pip3 install flasgger
 
 ## Bugs
 No known bugs at this time. Should be somes!
