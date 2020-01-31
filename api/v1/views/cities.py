@@ -52,9 +52,9 @@ def cityDel(id):
 def cityPost(id):
     """ POST a new state"""
     if storage.get("State", id) is None:
-        abort(404) 
+        abort(404)
     if not request.json:
-            return jsonify({"error": "Not a JSON"}), 400
+        return jsonify({"error": "Not a JSON"}), 400
     x = request.get_json()
     x['state_id'] = str(id)
     if "name" not in x:
@@ -62,7 +62,6 @@ def cityPost(id):
     s = City(**x)
     s.save()
     return jsonify(s.to_dict()), 201
-      
 
 
 @app_views.route('/cities/<id>', methods=['PUT'])
@@ -78,4 +77,5 @@ def cityPut(id):
     for k, v in x.items():
         if k not in ignore:
             setattr(city, k, v)
+    city.save()
     return jsonify(city.to_dict()), 200

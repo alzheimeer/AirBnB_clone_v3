@@ -51,12 +51,12 @@ def reviewDel(id):
 def reviewPost(id):
     """ POST a new review"""
     if storage.get("Place", id) is None:
-        abort(404) 
+        abort(404)
     if not request.json:
-            return jsonify({"error": "Not a JSON"}), 400
+        return jsonify({"error": "Not a JSON"}), 400
     x = request.get_json()
     if "User." + x["user_id"] not in storage.all("User"):
-            abort(404)
+        abort(404)
     x['place_id'] = str(id)
     if "user_id" not in x:
         return jsonify({"error": "Missing user_id"}), 400
@@ -65,6 +65,7 @@ def reviewPost(id):
     s = Review(**x)
     s.save()
     return jsonify(s.to_dict()), 201
+
 
 @app_views.route('/reviews/<id>', methods=['PUT'])
 def reviewPut(id):
@@ -79,4 +80,5 @@ def reviewPut(id):
     for k, v in x.items():
         if k not in ignore:
             setattr(review, k, v)
+    review.save()
     return jsonify(review.to_dict()), 200

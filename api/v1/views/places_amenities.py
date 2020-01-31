@@ -5,53 +5,60 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models import storage
 from models.place import Place
+from os import getenv
+
+bd = getenv('HBNB_TYPE_STORAGE')
 
 
 @app_views.route('/places/<place_id>/amenities', methods=['GET'])
 def retAinP(id):
     """ Retrieves [] of all Places amenities objects of a Place """
     ll = []
-    place = storage.get("Place", str(id))
-    if place is None:
-        abort(404)
-    amenities = place.amenities
-    for x in amenities:
-        ll.append(x.to_dict())
-    return jsonify(ll)
+    place = storage.all('Place')
+    for x in place:
+        if place[x].id == id:
+            vv = place[x].amenities
+            for i in vv:
+                ll.append(i.to_dict())
+            return (jsonify(ll))
+    abort(404)
 
 
-@app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['DELETE'])
-def delAinP(pid, aid):
+@app_views.route('/places/<place_id>/amenities/<amenity_id>',
+                 methods=['DELETE'])
+def delAinP(place_id, amenity_id):
     """Delete an amenity object from a place"""
-    place = storage.get("Place", str(pid))
-    if place is None:
+    ss = storage.get("Place", place_id)
+    aa = storage.get("Amenity", amenity_id)
+    if not aa or not ss:
         abort(404)
-    amenity = storage.get("Amenity", str(aid))
-    if amenity is None:
-        abort(404)
-    amenities = place.amenity
-    listA = [x.id for x in amenities]
-    if amenity_id not in listA:
-        abort(404)
-    for x in amenities:
-        if x.id == amenity_id:
-            x.delete()
-    storage.save()
-    return (jsonify({})), 200
+    for x in ss.amenities:
+        if x.id == aa.id:
+            if bd == 'db':
+                ss.amenities.remove(aa)
+            else:
+                ss.amenity_ids.remove(aa)
+            ss.save()
+            return jsonify({})
+    abort(404)
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>', methods=['POST'])
-def postAinP(pid, aid):
+def postAinP(place_id, amenity_id):
     """POST new amenity in id place """
-    place = storage.get("Place", pid)
-    if place is None:
+    ss = storage.get("Place", place_id)
+    aa = storage.get("Amenity", amenity_id)
+    print(aa)
+    print("+++++++++++")
+    print(ss)
+    if not aa or not ss:
         abort(404)
-    amenity = storage.get("Amenity", aid)
-    if amenity is None:
-        abort(404)
-    for x in place.amenities:
-        if x.id == str(aid):
-            return jsonify(x.to_dict()), 200
-    place.amenities.append(amenity)
-    storage.save()
-    return jsonify(amenity.to_dict()), 201
+    for x in ss.amenities:
+        if x.id == aa.id:
+            return jsonify(aa.to_dict())
+    if db == 'db':
+        ss.amenities.append(aa)
+    else:
+        ss.amenity_id.append(aa)
+    ss.save()
+    return jsonify(aa.to_dict()), 201

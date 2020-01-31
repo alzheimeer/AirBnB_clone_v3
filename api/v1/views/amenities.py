@@ -7,7 +7,6 @@ from flask import jsonify, abort, request
 from models.amenity import Amenity
 
 
-
 @app_views.route("/amenities", methods=["GET"])
 def amenityAll():
     """Retrieves all amenities with a list of objects"""
@@ -68,4 +67,5 @@ def amenityPut(id):
     for k, v in x.items():
         if k not in ignore:
             setattr(amenity, k, v)
+    amenity.save()
     return jsonify(amenity.to_dict()), 200
