@@ -60,8 +60,8 @@ def citiesPost(state_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def put_cities(city_id):
     """ Update"""
-    city = storage.get("City", str(city_id))
-    if city is None:
+    x = storage.get("City", str(city_id))
+    if x is None:
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
@@ -69,6 +69,6 @@ def put_cities(city_id):
     content = request.get_json().items()
     for key, val in content:
         if key not in a:
-            setattr(city, key, val)
-    city.save()
-    return jsonify(city.to_dict()), 200
+            setattr(x, key, val)
+    x.save()
+    return jsonify(x.to_dict()), 200
