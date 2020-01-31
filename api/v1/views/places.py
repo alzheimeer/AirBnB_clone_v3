@@ -51,12 +51,12 @@ def placeDel(id):
 def placePost(id):
     """ POST a new place"""
     if storage.get("City", id) is None:
-        abort(404) 
+        abort(404)
     if not request.json:
-            return jsonify({"error": "Not a JSON"}), 400
+        return jsonify({"error": "Not a JSON"}), 400
     x = request.get_json()
     if "User." + x["user_id"] not in storage.all("User"):
-            abort(404)
+        abort(404)
     x['city_id'] = str(id)
     if "user_id" not in x:
         return jsonify({"error": "Missing user_id"}), 400
@@ -65,6 +65,7 @@ def placePost(id):
     s = Place(**x)
     s.save()
     return jsonify(s.to_dict()), 201
+
 
 @app_views.route('/places/<id>', methods=['PUT'])
 def placePut(id):
@@ -79,4 +80,5 @@ def placePut(id):
     for k, v in x.items():
         if k not in ignore:
             setattr(place, k, v)
+    place.save()
     return jsonify(place.to_dict()), 200
