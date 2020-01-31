@@ -8,7 +8,7 @@ from models.city import City
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'])
 def cityAll(state_id):
-    """ Retrieves the list of all City objects of a State """
+    """ Retrieves the list cities """
     ll = []
     state = storage.get("State", str(state_id))
     if state is None:
@@ -22,7 +22,7 @@ def cityAll(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def cityId(city_id):
-    """ Retrieves an object depends on its ID """
+    """ Retrieves an object  ID """
     yy = storage.get("City", str(city_id))
     if yy is None:
         abort(404)
@@ -31,7 +31,7 @@ def cityId(city_id):
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def citiesDel(city_id):
-    """ Delete a City object depends on its ID"""
+    """ Delete a City  ID"""
     yy = storage.get("City", str(city_id))
     if yy is None:
         abort(404)
@@ -42,7 +42,7 @@ def citiesDel(city_id):
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def citiesPost(state_id):
-    """ POST a new cities, by typing the name and the id """
+    """ POST  """
     yy = storage.get("State", str(state_id))
     if yy is None:
         abort(404)
@@ -59,17 +59,15 @@ def citiesPost(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def put_cities(city_id):
-    """ Update a city object """
-    yy = storage.get("City", str(city_id))
+    """ Update"""
+    ignore = ["id", "update_at", "created_at", "state_id"]
+    yy = storage.get("City", city_id)
     if yy is None:
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
     for key, val in request.get_json().items():
-        if key is not 'id' and \
-           key is not 'state_id' and \
-           key is not 'created_at' and \
-           key is not 'updated_at':
+         if k not in ignore:
             setattr(yy, key, val)
     yy.save()
     return jsonify(yy.to_dict()), 200
