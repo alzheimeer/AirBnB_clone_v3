@@ -60,9 +60,8 @@ def citiesPost(state_id):
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def put_cities(city_id):
     """ Update"""
-    ignore = ["id", "update_at", "created_at", "state_id"]
-    yy = storage.get("City", str(city_id))
-    if yy is None:
+    city = storage.get("City", str(city_id))
+    if city is None:
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
@@ -72,5 +71,5 @@ def put_cities(city_id):
            key is not 'created_at' and \
            key is not 'updated_at':
             setattr(city, key, val)
-    yy.save()
-    return jsonify(yy.to_dict()), 200
+    city.save()
+    return jsonify(city.to_dict()), 200
