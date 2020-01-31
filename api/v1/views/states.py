@@ -38,18 +38,18 @@ def states_remove(state_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/', methods=['POST'], strict_slashes=False)
-def statePost():
-    """ POST a new state"""
-    x = request.get_json()
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
+def new_state():
+    """Creates a new state"""
+    state_data = request.get_json()
     if state_data is None:
         abort(400, "Not a JSON")
     if not state_data.get('name'):
         abort(400, "Missing name")
-    s = State(**x)
-    storage.new(statePost)
+    new_state = State(**state_data)
+    storage.new(new_state)
     storage.save()
-    return jsonify(statePost.to_dict()), 201
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
