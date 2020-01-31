@@ -16,24 +16,24 @@ def states_list():
     return jsonify(states_list)
 
 
-@app_views.route('/states/<state_id>', methods=["GET"], strict_slashes=False)
-def stateId(state_id):
-    """id state retrieve json object"""
-    s = storage.all('State').values()
-    for v in s:
-        if v.id == state_id:
-            return jsonify(v.to_dict())
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
+def states_list_id(state_id):
+    """Retrieves a specific State object by Id"""
+    states_objs = storage.all('State').values()
+    for element in states_objs:
+        if element.id == state_id:
+            return jsonify(element.to_dict())
     abort(404)
 
 
 @app_views.route('/states/<state_id>',
-                 methods=["DELETE"], strict_slashes=False)
-def stateDel(state_id):
-    """delete state with id"""
-    state = storage.get('State', state_id)
-    if state is None:
+                 methods=['DELETE'], strict_slashes=False)
+def states_remove(state_id):
+    """Remove a state by Id"""
+    state_to_delete = storage.get('State', state_id)
+    if state_to_delete is None:
         abort(404)
-    state.delete()
+    state_to_delete.delete()
     storage.save()
     return jsonify({}), 200
 
