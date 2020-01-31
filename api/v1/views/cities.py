@@ -61,13 +61,13 @@ def citiesPost(state_id):
 def put_cities(city_id):
     """ Update"""
     ignore = ["id", "update_at", "created_at", "state_id"]
-    yy = storage.get("City", city_id)
+    yy = storage.get("City", str(city_id))
     if yy is None:
         abort(404)
     if not request.get_json():
         return jsonify({'error': 'Not a JSON'}), 400
     for key, val in request.get_json().items():
-         if k not in ignore:
+        if k not in ignore:
             setattr(yy, key, val)
     yy.save()
     return jsonify(yy.to_dict()), 200
