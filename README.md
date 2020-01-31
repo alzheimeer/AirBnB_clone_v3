@@ -151,7 +151,7 @@ EOF  all  create  destroy  help  quit  show  update
 ```
 
 ## AirBnB clone - RESTful API
-This project has been great,
+This project has been great, For this project, you will need to review a peer’s pull request on the branch storage_get_count (which will be made for question 3), and then accept the pull request, with your review in the comments.
 
 #INSTALL FLASK
 $ pip3 install Flask
