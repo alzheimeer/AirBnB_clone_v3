@@ -67,7 +67,7 @@ def cityPost(id):
 @app_views.route('/cities/<id>', methods=['PUT'])
 def cityPut(id):
     """ Update a State object """
-    forbidden = ["id", "update_at", "created_at", "state_id"]
+    ignore = ["id", "update_at", "created_at", "state_id"]
     city = storage.get("City", id)
     if city is None:
         abort(404)
