@@ -156,6 +156,16 @@ This project has been great,
 #INSTALL FLASK
 $ pip3 install Flask
 
+#INSTALL FLASGGER
+$ pip3 install flasgger
+
+#INSTALL FLASK_CORS
+pip3 install flask_cors
+
+#UNITTEST
+ume@ubuntu:~/AirBnB_v3$ python3 -m unittest discover tests 2>&1 | tail -1
+
+## ENVIROMENT UNITEST
 
 ## Bugs
 No known bugs at this time. Should be somes!
