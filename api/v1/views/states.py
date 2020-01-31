@@ -39,16 +39,16 @@ def stateDel(id):
 
 @app_views.route('/states', methods=['POST'])
 def statePost():
-    """ POST a new state"""
-    x = request.get_json()
-    if x is None:
+    """Creates a new state"""
+    state_data = request.get_json()
+    if state_data is None:
         abort(400, "Not a JSON")
-    if not x.get('name'):
+    if not state_data.get('name'):
         abort(400, "Missing name")
-    s = State(**x)
-    storage.new(statePost)
+    new_state = State(**state_data)
+    storage.new(new_state)
     storage.save()
-    return jsonify(statePost.to_dict()), 201
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/states/<id>', methods=['PUT'])
