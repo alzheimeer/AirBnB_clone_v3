@@ -20,14 +20,11 @@ def amenityAll():
 @app_views.route("/amenities/<id>", methods=["GET"])
 def amenityId(id):
     """id Amenity retrieve json object"""
-    ll = []
     s = storage.all('Amenity').values()
     for v in s:
         if v.id == id:
-            ll.append(v.to_dict())
-    if not ll:
-        return abort(404)
-    return jsonify(ll)
+        	return jsonify(v.to_dict())
+    abort(404)
 
 
 @app_views.route("/amenities/<id>", methods=["DELETE"])
@@ -44,28 +41,30 @@ def amenityDel(id):
 @app_views.route('/amenities/', methods=['POST'])
 def amenityPost():
     """ POST a new amenity"""
-    if not request.json:
-        return jsonify({"error": "Not a JSON"}), 400
-    if 'name' not in request.json:
-        return jsonify({"error": "Missing name"}), 400
     x = request.get_json()
-    s = Amenity(**x)
-    s.save()
-    return jsonify(s.to_dict()), 201
+    if x is None:
+        abort(400, "Not a JSON")
+    if not x.get('name'):
+        abort(400, "Missing name")
+    new_state = State(**x)
+    storage.new(new_state)
+    storage.save()
+    return jsonify(new_state.to_dict()), 201
 
 
 @app_views.route('/amenities/<id>', methods=['PUT'])
 def amenityPut(id):
     """ Update a amenity object """
+    x = request.get_json()
+    if x is None:
+        abort(400, "Not a JSON")
     ignore = {"id", "created_at", "updated_at"}
     amenity = storage.get("Amenity", id)
     if amenity is None:
         abort(404)
-    if not request.json:
-        return jsonify({"error": "Not a JSON"}), 400
-    x = request.get_json()
     for k, v in x.items():
         if k not in ignore:
             setattr(amenity, k, v)
     amenity.save()
     return jsonify(amenity.to_dict()), 200
+    
